@@ -38,65 +38,7 @@
                 </li>
             </ul>
         </aside>
-        <section class="formulaire">
 
-            <!-- Personal Info -->
-            <div class="info-personnel">
-                <h2>Personal Information</h2>
-
-                <label>Name</label>
-                <input type="text" placeholder="Enter your name">
-
-                <label>Role</label>
-                <input type="text" placeholder="Enter your Role">
-
-                <label>Profile Photo (URL)</label>
-                <input type="url" placeholder="Enter image source (URL)">
-
-                <label>Email</label>
-                <input type="email" placeholder="Enter your Email">
-
-                <label>Phone Number</label>
-                <input type="number" placeholder="Enter your Phone Number">
-            </div>
-
-            <div class="experiences">
-                <h2>Professional Experiences</h2>
-
-                <!-- Experience Item -->
-                <div class="experience-item">
-                    <label>Job Title</label>
-                    <input type="text" placeholder="e.g. Frontend Developer">
-
-                    <label>Company Name</label>
-                    <input type="text" placeholder="e.g. Eurelec">
-
-                    <label>City / Country</label>
-                    <input type="text" placeholder="e.g. Casablanca, Morocco">
-
-                    <div class="dates">
-                        <div>
-                            <label>Start Date</label>
-                            <input type="month">
-                        </div>
-
-                        <div>
-                            <label>End Date</label>
-                            <input type="month">
-                        </div>
-                    </div>
-
-                    <label>Responsibilities / Tasks</label>
-                    <textarea placeholder="Describe tasks and achievements..."></textarea>
-
-                    <label>Skills</label>
-                    <input type="text" placeholder="HTML, CSS, JS...">
-                </div>
-
-                <button class="add-btn">+ Add Another Experience</button>
-            </div>
-
-        </section>
 
 
         <!-- SECTION DROITE : PLAN -->
@@ -188,6 +130,37 @@
 
         </main>
     </div>
+    <section class="formulaire">
+
+        <!-- Personal Info -->
+        <div class="info-personnel">
+            <h2>Personal Information</h2>
+            <h2 class="X">X</h2>
+
+            <label>Name</label>
+            <input id="worker-name" type="text" placeholder="Enter your name">
+
+            <label>Role</label>
+            <input id="worker-role" type="text" placeholder="Enter your Role">
+
+            <label>Profile Photo (URL)</label>
+            <input id="worker-photo" type="url" placeholder="Enter image source (URL)">
+
+            <label>Email</label>
+            <input id="worker-email" type="email" placeholder="Enter your Email">
+
+            <label>Phone Number</label>
+            <input id="worker-number" type="number" placeholder="Enter your Phone Number">
+            <label for="">Experiences</label>
+            <div class="experiences">
+                <input id="worker-experience" type="text" placeholder="Enter your Experiences">
+                <button class="add-experience">+</button>
+            </div>
+            <div class="experience-container"></div>
+
+        </div>
+
+    </section>
     <script src="script.js"></script>
 </body>
 

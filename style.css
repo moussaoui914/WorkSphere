@@ -158,16 +158,36 @@ body {
 }
 
 .formulaire {
-    display: none;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
+    display: block;
+    z-index: 99;
     padding: 30px;
-    background: #f7f9fc;
     border-radius: 18px;
-    max-width: 1100px;
+    max-width: 800px;
     margin: 20px auto;
     font-family: "Poppins", sans-serif;
     position: absolute;
+    top: 10px;
+    left: 20%;
+}
+.experiences{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.add-experience{
+    width: 30px;
+    background-color: #2196F3;
+    height: 30px;
+    border-radius: 8px;
+    border-style: none;
+    margin-left: 10px;
+    cursor: pointer;
+}
+.X{
+    position: absolute;
+    right: 50px;
+    top: 50px;
+    cursor: pointer;
 }
 
 /* Titles */
@@ -177,8 +197,7 @@ body {
     color: #222;
 }
 
-.info-personnel,
-.experiences {
+.info-personnel{
     background: white;
     padding: 25px;
     border-radius: 18px;
@@ -201,6 +220,7 @@ body {
     font-size: 15px;
     background: #fafafa;
     transition: 0.2s;
+    margin-bottom: 8px;
 }
 
 .formulaire input:focus,
