@@ -18,25 +18,6 @@
 
             <button class="add-worker-btn">+ Add New Worker</button>
 
-            <ul class="worker-list">
-                <li class="worker">
-                    <img src="https://i.pravatar.cc/60?img=44">
-                    <div>
-                        <strong>Kenza A.</strong><br>
-                        Comptable
-                    </div>
-                    <button class="remove">X</button>
-                </li>
-
-                <li class="worker">
-                    <img src="https://i.pravatar.cc/60?img=38">
-                    <div>
-                        <strong>Mohamed R.</strong><br>
-                        Marketing
-                    </div>
-                    <button class="remove">X</button>
-                </li>
-            </ul>
         </aside>
 
 
@@ -58,73 +39,27 @@
                 <button class="add-btn">+</button>
             </div>
 
-            <!-- Réception -->
             <div class="zone reception">
-                <span class="zone-title">Réception</span>
-                <div class="worker">
-                    <img src="https://i.pravatar.cc/60?img=5">
-                    <div>
-                        <strong>Imane L.</strong><br>
-                        Réceptionniste
-                    </div>
-                    <button class="remove">X</button>
-                </div>
                 <button class="add-btn">+</button>
             </div>
 
-            <!-- Salle des serveurs -->
             <div class="zone servers">
                 <span class="zone-title">Salle des serveurs</span>
-                <div class="worker">
-                    <img src="https://i.pravatar.cc/60?img=8">
-                    <div>
-                        <strong>Reda Y.</strong><br>
-                        Technicien IT
-                    </div>
-                    <button class="remove">X</button>
-                </div>
                 <button class="add-btn">+</button>
             </div>
 
-            <!-- Salle de sécurité -->
             <div class="zone security-room">
                 <span class="zone-title">Salle de sécurité</span>
-                <div class="worker">
-                    <img src="https://i.pravatar.cc/60?img=14">
-                    <div>
-                        <strong>Hicham A.</strong><br>
-                        Agent de sécurité
-                    </div>
-                    <button class="remove">X</button>
-                </div>
                 <button class="add-btn">+</button>
             </div>
 
-            <!-- Salle du personnel -->
             <div class="zone staff-room">
                 <span class="zone-title">Salle du personnel</span>
-                <div class="worker">
-                    <img src="https://i.pravatar.cc/60?img=20">
-                    <div>
-                        <strong>Fatima Z.</strong><br>
-                        RH
-                    </div>
-                    <button class="remove">X</button>
-                </div>
                 <button class="add-btn">+</button>
             </div>
 
-            <!-- Salle d'archives -->
             <div class="zone archive">
                 <span class="zone-title">Salle d’archives</span>
-                <div class="worker">
-                    <img src="https://i.pravatar.cc/60?img=35">
-                    <div>
-                        <strong>Zakaria M.</strong><br>
-                        Archiviste
-                    </div>
-                    <button class="remove">X</button>
-                </div>
                 <button class="add-btn">+</button>
             </div>
 
@@ -132,7 +67,6 @@
     </div>
     <section class="formulaire">
 
-        <!-- Personal Info -->
         <div class="info-personnel">
             <h2>Personal Information</h2>
             <h2 class="X">X</h2>
@@ -151,13 +85,23 @@
 
             <label>Phone Number</label>
             <input id="worker-number" type="number" placeholder="Enter your Phone Number">
-            <label for="">Experiences</label>
-            <div class="experiences">
-                <input id="worker-experience" type="text" placeholder="Enter your Experiences">
-                <button class="add-experience">+</button>
+            <div class="experiences-header">
+            <h4 class="experience-parent">Experiences</h4>
+            <button class="add-experience">+</button>
             </div>
-            <div class="experience-container"></div>
-
+            <div class="experiences">
+                <div class="each-experience">
+                    <label for="">Experience</label>
+                    <input class="worker-experience" type="text" placeholder="Enter your Experiences">
+                    <label for="">Company Name</label>
+                    <input class="worker-company" type="text" placeholder="Company Name">
+                    <label for="">Years Of Experiences</label>
+                    <input class="worker-years" type="text" placeholder="Enter your Years Of Experiences">
+                </div>
+            </div>
+            <div class="experience-container">
+            </div>
+            <button class="addWorker">Add worker</button>
         </div>
 
     </section>
