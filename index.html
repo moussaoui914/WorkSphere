@@ -1,116 +1,114 @@
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WorkSphere – Gestion du Personnel</title>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <div class="app-container">
+<div class="app-container">
 
-        <aside class="left-panel">
-            <h2>Unassigned Staff</h2>
-            <button class="add-worker-btn">+ Add New Worker</button>
-            <ul class="worker-list"></ul>
-        </aside>
+    <aside class="left-panel">
+        <h2>Unassigned Staff</h2>
+        <button class="add-worker-btn">+ Add New Worker</button>
+        <ul class="worker-list"></ul>
+    </aside>
 
+    <!-- SECTION DROITE : PLAN -->
+    <main class="floor-map">
 
-
-
-        <!-- SECTION DROITE : PLAN -->
-        <main class="floor-map">
-
-            <!-- Salle de conférence -->
-            <div class="zone conference">
-                <span class="zone-title">Salle de conférence</span>
-                <div class="worker">
-                    <img src="https://i.pravatar.cc/60?img=1">
-                    <div>
-                        <strong>Sarah Benali</strong><br>
-                        Manager
-                    </div>
-                    <button class="remove">X</button>
-                </div>
-                <button class="add-btn">+</button>
-            </div>
-
-            <div class="zone reception">
-                <button class="add-btn">+</button>
-            </div>
-
-            <div class="zone servers">
-                <span class="zone-title">Salle des serveurs</span>
-                <button class="add-btn">+</button>
-            </div>
-
-            <div class="zone security-room">
-                <span class="zone-title">Salle de sécurité</span>
-                <button class="add-btn">+</button>
-            </div>
-
-            <div class="zone staff-room">
-                <span class="zone-title">Salle du personnel</span>
-                <button class="add-btn">+</button>
-            </div>
-
-            <div class="zone archive">
-                <span class="zone-title">Salle d’archives</span>
-                <button class="add-btn">+</button>
-            </div>
-
-        </main>
-    </div>
-    <section class="formulaire">
-
-        <div class="info-personnel">
-            <h2>Personal Information</h2>
-            <h2 class="X">X</h2>
-
-            <label>Name</label>
-            <input id="worker-name" type="text" placeholder="Enter your name">
-
-            <label>Role</label>
-            <input id="worker-role" type="text" placeholder="Enter your Role">
-
-            <label>Profile Photo (URL)</label>
-            <input id="worker-photo" type="url" placeholder="Enter image source (URL)">
-
-            <label>Email</label>
-            <input id="worker-email" type="email" placeholder="Enter your Email">
-
-            <label>Phone Number</label>
-            <input id="worker-number" type="number" placeholder="Enter your Phone Number">
-            <div class="experiences-header">
-                <h4 class="experience-parent">Experiences</h4>
-                <button class="add-experience">Add Experience</button>
-            </div>
-            <div class="experiences">
-                <div class="each-experience">
-                    <label for="">Experience</label>
-                    <input class="worker-experience" type="text" placeholder="Enter your Experiences">
-                    <label for="">Company Name</label>
-                    <input class="worker-company" type="text" placeholder="Company Name">
-                    <label for="">Years Of Experiences</label>
-                    <input class="worker-years" type="text" placeholder="Enter your Years Of Experiences">
-                </div>
-            </div>
-            <div class="experience-container">
-            </div>
-            <button class="addWorker">Add worker</button>
+        <!-- Salle de conférence -->
+        <div class="zone conference">
+            <span class="zone-title">Salle de conférence</span>
+            <button onclick="assignWorkers(1)" class="add-btn">+</button>
         </div>
-    </section>
-    <div class="details-modal">
-        <div class="modal-box">
-            <span class="close-modal">&times;</span>
-            <div class="modal-content"></div>
+    
+        <div class="zone reception">
+            <span class="zone-title">Réception</span>
+            <button onclick="assignWorkers(2)" class="add-btn">+</button>
         </div>
-    </div>
 
-    <script src="script.js"></script>
+        <div class="zone servers">
+            <span class="zone-title">Salle des serveurs</span>
+            <button onclick="assignWorkers(3)" class="add-btn">+</button>
+        </div>
+
+        <div class="zone security-room">
+            <span class="zone-title">Salle de sécurité</span>
+            <button onclick="assignWorkers(4)" class="add-btn">+</button>
+        </div>
+
+        <div class="zone staff-room">
+            <span class="zone-title">Salle du personnel</span>
+            <button onclick="assignWorkers(5)" class="add-btn">+</button>
+        </div>
+
+        <div class="zone archive">
+            <span class="zone-title">Salle d’archives</span>
+            <button onclick="assignWorkers(6)" class="add-btn">+</button>
+        </div>
+
+    </main>
+</div>
+
+<!-- FORMULAIRE -->
+<section class="formulaire">
+    <div class="info-personnel">
+        <h2>Personal Information</h2>
+        <h2 class="X">X</h2>
+
+        <label>Name</label>
+        <input id="worker-name" type="text" placeholder="Enter your name">
+
+        <label>Role</label>
+        <select id="worker-role">
+            <option value="Receptionist">Receptionist</option>
+            <option value="IT Technician">IT Technician</option>
+            <option value="Security Agent">Security Agent</option>
+            <option value="Manager">Manager</option>
+            <option value="Cleaning">Cleaning</option>
+            <option value="Other">Other</option>
+        </select>
+
+        <label>Profile Photo (URL)</label>
+        <input id="worker-photo" type="url" placeholder="Enter image source (URL)">
+
+        <label>Email</label>
+        <input id="worker-email" type="email" placeholder="Enter your Email">
+
+        <label>Phone Number</label>
+        <input id="worker-number" type="number" placeholder="Enter your Phone Number">
+
+        <div class="experiences-header">
+            <h4 class="experience-parent">Experiences</h4>
+            <button class="add-experience">Add Experience</button>
+        </div>
+
+        <div class="experiences">
+            <div class="each-experience">
+                <label>Experience</label>
+                <input class="worker-experience" type="text" placeholder="Enter your Experiences">
+                <label>Company Name</label>
+                <input class="worker-company" type="text" placeholder="Company Name">
+                <label>Years Of Experiences</label>
+                <input class="worker-years" type="text" placeholder="Enter your Years Of Experiences">
+            </div>
+        </div>
+
+        <button class="addWorker">Add worker</button>
+    </div>
+</section>
+
+<!-- MODAL DETAILS -->
+<div class="details-modal">
+    <div class="modal-box">
+        <span class="close-modal">&times;</span>
+        <div class="modal-content"></div>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
-
 </html>

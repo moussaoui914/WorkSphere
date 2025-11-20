@@ -9,6 +9,25 @@ body {
     background: #f1f1f1;
 }
 
+.formulaire label,
+.formulaire input,
+.formulaire select {
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.experiences-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.experiences .each-experience {
+    margin-bottom: 10px;
+}
+
 .app-container {
     display: flex;
     height: 100vh;
@@ -53,8 +72,6 @@ body {
 .floor-map {
     width: 100%;
     position: relative;
-
-    /* BACKGROUND IMAGE */
     background-image: url("room.jpg");
     background-size: cover;
     background-position: center;
@@ -150,43 +167,16 @@ body {
     bottom: 40px;
     right: 240px;
 }
-.first-part h2{
-    position: absolute;
-    left: 77px;
-    color: rgb(4, 4, 176);
-}
-.second-part ul li{
-    list-style: none;
-}
-.second-part h3{
-    color: #2f6ee6;
-    margin: 10px 0px;
-}
-.first-part{
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+
 .archive {
     bottom: 40px;
     right: 0px;
 }
 
-.experiences-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+/* -------------------------------- */
+/* DETAILS MODAL */
+/* -------------------------------- */
 
-.each-experience {
-    border-radius: 8px;
-    border: 1px solid gray;
-    padding: 8px;
-    margin-bottom: 10px;
-    margin-top: 10px;
-
-}
 .details-modal {
     position: fixed;
     top: 0; left: 0;
@@ -224,6 +214,29 @@ body {
     border-radius: 50%;
     margin-bottom: 15px;
 }
+
+.first-part {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.first-part h2 {
+    color: rgb(4, 4, 176);
+}
+
+.second-part ul li {
+    list-style: none;
+}
+
+.second-part h3 {
+    color: #2f6ee6;
+    margin: 10px 0px;
+}
+
+/* -------------------------------- */
+/* FORMULAIRE */
+/* -------------------------------- */
 
 .formulaire {
     display: none;
@@ -263,27 +276,12 @@ h4.experience-parent {
     margin-top: 8px;
 }
 
-.experience-container {
-    display: flex;
-    gap: 10px;
-}
-
-.each-skill {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    width: 80px;
-    height: 30px;
-    border-radius: 10px;
-    border-style: none;
-    background-color: gainsboro;
-    color: black;
-    font-weight: bold;
-}
-
-.delete-experience {
-    color: red;
-    cursor: pointer;
+.each-experience {
+    border-radius: 8px;
+    border: 1px solid gray;
+    padding: 8px;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 .add-experience {
@@ -296,84 +294,51 @@ h4.experience-parent {
     cursor: pointer;
 }
 
-.X {
-    position: absolute;
-    right: 50px;
-    top: 50px;
-    cursor: pointer;
-}
+/* -------------------------------- */
+/* ASSIGN WORKER CARD */
+/* -------------------------------- */
 
-/* Titles */
-.formulaire h2 {
-    font-size: 22px;
-    margin-bottom: 20px;
-    color: #222;
-}
-
-.info-personnel {
-    background: white;
-    padding: 25px;
-    border-radius: 18px;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
-}
-
-.formulaire label {
-    margin-top: 12px;
-    font-weight: 500;
-    color: #444;
-}
-
-.formulaire input,
-.formulaire textarea {
-    width: 100%;
-    padding: 10px 12px;
-    margin-top: 5px;
-    border-radius: 10px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-    background: #fafafa;
-    transition: 0.2s;
-    margin-bottom: 8px;
-}
-
-.formulaire input:focus,
-.formulaire textarea:focus {
-    border-color: #4a8bff;
-    background: white;
-}
-
-.experience-item {
+.card {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 10px;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #eee;
+    background: #fff;
+    padding: 8px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
 }
 
-.dates {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+.card img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
-.add-btn {
-    margin-top: 20px;
-    padding: 10px 18px;
-    border: none;
-    background: #4a8bff;
+.card h2 {
+    font-size: 16px;
+    margin: 0;
+}
+
+.card p {
+    font-size: 14px;
+    margin: 0;
+    color: #555;
+}
+
+.edit-button {
+    margin-left: auto;
+    background: #2196F3;
     color: white;
-    font-size: 15px;
-    border-radius: 10px;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 8px;
     cursor: pointer;
-    transition: 0.2s;
 }
 
-.add-btn:hover {
-    background: #2f6ee6;
-}
-
-
-
+/* -------------------------------- */
+/* RESPONSIVE */
+/* -------------------------------- */
 @media (max-width: 768px) {
     .app-container {
         flex-direction: column;
@@ -390,6 +355,6 @@ h4.experience-parent {
     }
 
     .formulaire {
-        grid-template-columns: 1fr;
+        left: 10%;
     }
 }
