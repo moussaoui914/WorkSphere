@@ -1,6 +1,3 @@
-// =========================================
-// VARIABLES
-// =========================================
 let workers = [];
 let nextId = 1;
 
@@ -17,15 +14,12 @@ const addWorkerBtn = document.querySelector(".add-worker-btn");
 const workerForm = document.querySelector(".formulaire");
 const appContainer = document.querySelector(".app-container");
 const closeForm = document.querySelector(".X");
-
 const modal = document.querySelector('.details-modal');
 const closeModal = document.querySelector('.close-modal');
-
+const assignOverlay = document.querySelector('.assign-overlay');
+const closeAssign = document.querySelector('.close-assign');
 let selectedZone;
 
-// =========================================
-// OUVRIR / FERMER FORMULAIRE
-// =========================================
 addWorkerBtn.addEventListener("click", () => {
     workerForm.style.display = "block";
     appContainer.style.filter = "blur(20px)";
@@ -36,9 +30,6 @@ closeForm.addEventListener("click", () => {
     appContainer.style.filter = "blur(0px)";
 });
 
-// =========================================
-// LOCALSTORAGE
-// =========================================
 function loadData() {
     const savedWorkers = localStorage.getItem('workers');
     workers = savedWorkers ? JSON.parse(savedWorkers) : [];
@@ -51,32 +42,28 @@ function saveData() {
     localStorage.setItem('workers', JSON.stringify(workers));
 }
 
-// =========================================
-// RENDU WORKERS
-// =========================================
 function renderWorkersList() {
     const list = document.querySelector('.worker-list');
     list.innerHTML = "";
 
-    workers.forEach(worker => {
+    const unassignedWorkers = workers.filter(worker => worker.assignedZone === null);
+
+    unassignedWorkers.forEach(worker => {
         const li = document.createElement("li");
         li.classList.add("worker");
         li.setAttribute("onclick", `details(${worker.id})`);
         li.innerHTML = `
-            <img src="${worker.image}">
+            <img src="${worker.image}" alt="${worker.name}">
             <div>
                 <strong>${worker.name}</strong><br>
                 ${worker.role}
             </div>
-            <button class="remove" data-id="${worker.id}">Update</button>
+            <button class="remove" onclick="updateWorker(${worker.id})">Update</button>
         `;
         list.appendChild(li);
     });
 }
 
-// =========================================
-// AJOUT WORKER
-// =========================================
 function handleFormSubmit() {
     const name = document.getElementById("worker-name").value.trim();
     const role = document.getElementById("worker-role").value;
@@ -94,7 +81,9 @@ function handleFormSubmit() {
         const exp = row.querySelector('.worker-experience').value.trim();
         const company = row.querySelector('.worker-company').value.trim();
         const year = row.querySelector('.worker-years').value.trim();
-        experiences.push({ experience: exp, company: company, year: year });
+        if (exp && company && year) {
+            experiences.push({ experience: exp, company: company, year: year });
+        }
     });
 
     const newWorker = {
@@ -112,20 +101,32 @@ function handleFormSubmit() {
     saveData();
     renderWorkersList();
 
+    document.getElementById("worker-name").value = "";
+    document.getElementById("worker-photo").value = "";
+    document.getElementById("worker-email").value = "";
+    document.getElementById("worker-number").value = "";
+    document.querySelector('.experiences').innerHTML = `
+        <div class="each-experience">
+            <label>Experience</label>
+            <input class="worker-experience" type="text" placeholder="Enter your Experiences">
+            <label>Company Name</label>
+            <input class="worker-company" type="text" placeholder="Company Name">
+            <label>Years Of Experiences</label>
+            <input class="worker-years" type="text" placeholder="Enter your Years Of Experiences">
+        </div>
+    `;
+
     workerForm.style.display = "none";
     appContainer.style.filter = "blur(0px)";
 }
 
 document.querySelector('.addWorker').addEventListener('click', handleFormSubmit);
 
-// =========================================
-// DETAILS MODAL
-// =========================================
 function details(workerId) {
     const worker = workers.find(w => w.id === workerId);
     modal.querySelector('.modal-content').innerHTML = `
         <div class="first-part">
-            <img src="${worker.image}" class="modal-avatar">
+            <img src="${worker.image}" class="modal-avatar" alt="${worker.name}">
             <h2>${worker.name}</h2>
         </div>
         <div class="second-part">
@@ -151,9 +152,6 @@ closeModal.addEventListener('click', () => {
     appContainer.style.filter = "blur(0px)";
 });
 
-// =========================================
-// AJOUT EXPERIENCES
-// =========================================
 function addExperiences() {
     const container = document.querySelector('.experiences');
     const div = document.createElement('div');
@@ -171,48 +169,121 @@ function addExperiences() {
 
 document.querySelector('.add-experience').addEventListener('click', addExperiences);
 
-// =========================================
-// ASSIGN WORKERS TO ZONES
-// =========================================
 function assignWorkers(zoneNum) {
     selectedZone = zoneNum;
-    document.querySelector('.assign-overlay').style.display = 'flex';
+    assignOverlay.style.display = 'flex';
+    appContainer.style.filter = 'blur(20px)';
+    
     const modalBox = document.querySelector('.bd');
     modalBox.innerHTML = '';
     const roles = zoneRules[zoneNum];
 
-    workers.forEach(worker => {
-        if (roles.includes(worker.role) && worker.assignedZone === null) {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `
-                <img src="${worker.image}" alt="${worker.name}">
-                <div>
-                    <h2>${worker.name}</h2>
-                    <p>${worker.role}</p>
-                </div>
-                <button onclick="addToZone(this)" class="edit-button">Add</button>
-            `;
-            modalBox.appendChild(card);
-        }
+    const availableWorkers = workers.filter(worker => 
+        roles.includes(worker.role) && worker.assignedZone === null
+    );
+
+    if (availableWorkers.length === 0) {
+        modalBox.innerHTML = '<p>No available workers for this zone.</p>';
+        return;
+    }
+
+    availableWorkers.forEach(worker => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <img src="${worker.image}" alt="${worker.name}">
+            <div>
+                <h2>${worker.name}</h2>
+                <p>${worker.role}</p>
+            </div>
+            <button onclick="addToZone(${worker.id})" class="edit-button">Add</button>
+        `;
+        modalBox.appendChild(card);
     });
 }
 
-function addToZone(button){
-    const card = button.closest('.card');
-    card.querySelector('button').remove();
-    const zones = document.querySelectorAll('.zone');
-    const zzone = zones[selectedZone-1];
-    zzone.appendChild(card);
-
-    const workerName = card.querySelector('h2').textContent;
-    const worker = workers.find(w => w.name === workerName);
-    if(worker) worker.assignedZone = selectedZone;
+function addToZone(workerId) {
+    const worker = workers.find(w => w.id === workerId);
+    if (worker) {
+        worker.assignedZone = selectedZone;
+        saveData();
+        renderWorkersList();
+        
+        const zone = document.querySelectorAll('.zone')[selectedZone - 1];
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <img src="${worker.image}" alt="${worker.name}">
+            <div>
+                <h2>${worker.name}</h2>
+                <p>${worker.role}</p>
+            </div>
+            <button onclick="removeFromZone(${worker.id})" class="edit-button">Remove</button>
+        `;
+        zone.appendChild(card);
+        
+        assignOverlay.style.display = 'none';
+        appContainer.style.filter = 'blur(0px)';
+    }
 }
 
-// =========================================
-// INITIALISATION
-// =========================================
+function removeFromZone(workerId) {
+    const worker = workers.find(w => w.id === workerId);
+    if (worker) {
+        worker.assignedZone = null;
+        saveData();
+        renderWorkersList();
+        
+        const zone = document.querySelectorAll('.zone')[worker.assignedZone - 1];
+        const cards = zone.querySelectorAll('.card');
+        cards.forEach(card => {
+            if (card.querySelector('h2').textContent === worker.name) {
+                card.remove();
+            }
+        });
+    }
+}
+
+function updateWorker(workerId) {
+    const worker = workers.find(w => w.id === workerId);
+    if (worker) {
+        document.getElementById("worker-name").value = worker.name;
+        document.getElementById("worker-role").value = worker.role;
+        document.getElementById("worker-photo").value = worker.image;
+        document.getElementById("worker-email").value = worker.email;
+        document.getElementById("worker-number").value = worker.number;
+        
+        const experiencesContainer = document.querySelector('.experiences');
+        experiencesContainer.innerHTML = '';
+        
+        worker.experiences.forEach(exp => {
+            const div = document.createElement('div');
+            div.className = 'each-experience';
+            div.innerHTML = `
+                <label>Experience</label>
+                <input type="text" class="worker-experience" value="${exp.experience}">
+                <label>Company Name</label>
+                <input type="text" class="worker-company" value="${exp.company}">
+                <label>Years of Experience</label>
+                <input type="text" class="worker-years" value="${exp.year}">
+            `;
+            experiencesContainer.appendChild(div);
+        });
+        
+        workers = workers.filter(w => w.id !== workerId);
+        saveData();
+        renderWorkersList();
+        
+        workerForm.style.display = "block";
+        appContainer.style.filter = "blur(20px)";
+    }
+}
+
+closeAssign.addEventListener('click', () => {
+    assignOverlay.style.display = 'none';
+    appContainer.style.filter = 'blur(0px)';
+});
+
 function init() {
     loadData();
     renderWorkersList();

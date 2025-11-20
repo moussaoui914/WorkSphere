@@ -9,17 +9,13 @@
 <body>
 
 <div class="app-container">
-
     <aside class="left-panel">
         <h2>Unassigned Staff</h2>
         <button class="add-worker-btn">+ Add New Worker</button>
         <ul class="worker-list"></ul>
     </aside>
 
-    <!-- SECTION DROITE : PLAN -->
     <main class="floor-map">
-
-        <!-- Salle de conférence -->
         <div class="zone conference">
             <span class="zone-title">Salle de conférence</span>
             <button onclick="assignWorkers(1)" class="add-btn">+</button>
@@ -46,14 +42,12 @@
         </div>
 
         <div class="zone archive">
-            <span class="zone-title">Salle d’archives</span>
+            <span class="zone-title">Salle d'archives</span>
             <button onclick="assignWorkers(6)" class="add-btn">+</button>
         </div>
-
     </main>
 </div>
 
-<!-- FORMULAIRE -->
 <section class="formulaire">
     <div class="info-personnel">
         <h2>Personal Information</h2>
@@ -101,11 +95,20 @@
     </div>
 </section>
 
-<!-- MODAL DETAILS -->
 <div class="details-modal">
     <div class="modal-box">
         <span class="close-modal">&times;</span>
         <div class="modal-content"></div>
+    </div>
+</div>
+
+<div class="assign-overlay">
+    <div class="assign-modal">
+        <div class="assign-header">
+            <h3>Assign Workers to Zone</h3>
+            <span class="close-assign">&times;</span>
+        </div>
+        <div class="bd"></div>
     </div>
 </div>
 
