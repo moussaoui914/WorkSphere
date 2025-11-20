@@ -2,6 +2,7 @@ const addWorkerBtn = document.querySelector(".add-worker-btn");
 const workerForm = document.querySelector('.formulaire');
 const appContainer = document.querySelector('.app-container');
 const removeFrom = document.querySelector('.X');
+let workers = [];
 
 addWorkerBtn.addEventListener('click', () => {
     workerForm.style.display = 'block';
@@ -12,6 +13,14 @@ removeFrom.addEventListener('click', () => {
     workerForm.style.display = 'none';
     appContainer.style.filter = 'blur(0px)';
 });
+
+function loadData() {
+    const savedWorkers = localStorage.getItem('workers');
+    workers = savedWorkers ? JSON.parse(savedWorkers) : [];
+}
+function saveData() {
+    localStorage.setItem('workers', JSON.stringify(workers));
+}
 let j = 1;
 function handleFormSubmit() {
 
@@ -52,24 +61,9 @@ function handleFormSubmit() {
         number: number,
         experiences: newExperience
     }
-    console.log(newWorker);
-
-    const list = document.querySelector('.left-panel');
-    const workerNew = document.createElement('ul');
-    workerNew.classList.add('worker-list');
-    workerNew.innerHTML = `
-            <li class="worker">
-                    <img src="${newWorker.image}">
-                    <div>
-                        <strong>${newWorker.name}</strong><br>
-                        ${newWorker.role}
-                    </div>
-                    <button class="remove">X</button>
-                </li>
-    `
-    list.appendChild(workerNew);
-    console.log(list);
-    
+    workers.push(newWorker);
+    saveData();
+    renderWorkersList(workers);
 }
 
 const confirmWorker = document.querySelector('.addWorker');
@@ -79,7 +73,25 @@ confirmWorker.addEventListener('click', () => {
     appContainer.style.filter = 'blur(0px)';
 
 })
+function renderWorkersList(workerListAll) {
+    const list = document.querySelector('.left-panel');
+    const workerNew = document.createElement('ul');
+    workerNew.classList.add('worker-list');
+    for (eachWorker of workerListAll) {
+        workerNew.innerHTML += `
+            <li class="worker">
+                    <img src="${eachWorker.image}">
+                    <div>
+                        <strong>${eachWorker.name}</strong><br>
+                        ${eachWorker.role}
+                    </div>
+                    <button id="${eachWorker.id}" class="remove">Update</button>
+            </li>
+    `
+        list.appendChild(workerNew);
+    }
 
+}
 
 function addExperiences() {
     const container = document.querySelector('.experiences');
@@ -130,3 +142,12 @@ function addExperiences() {
 
 const addExperienceBtn = document.querySelector('.add-experience');
 addExperienceBtn.addEventListener('click', addExperiences);
+
+
+function init() {
+    loadData();
+    renderWorkersList(workers);    
+}
+
+
+document.addEventListener('DOMContentLoaded', init);

@@ -112,15 +112,15 @@ body {
 
 .worker .remove {
     position: absolute;
-    top: 5px;
-    right: 5px;
-    border: none;
-    background: #e53935;
-    color: white;
-    border-radius: 50%;
+    background-color: transparent;
+    border-style: none;
+    top: 18px;
+    right: 27px;
+    color: rgb(84, 128, 18);
     width: 22px;
     height: 22px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 /* -------------------------------- */
