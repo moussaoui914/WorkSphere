@@ -12,13 +12,12 @@
 
     <div class="app-container">
 
-        <!-- SECTION GAUCHE -->
         <aside class="left-panel">
             <h2>Unassigned Staff</h2>
-
             <button class="add-worker-btn">+ Add New Worker</button>
-
+            <ul class="worker-list"></ul>
         </aside>
+
 
 
 
@@ -86,8 +85,8 @@
             <label>Phone Number</label>
             <input id="worker-number" type="number" placeholder="Enter your Phone Number">
             <div class="experiences-header">
-            <h4 class="experience-parent">Experiences</h4>
-            <button class="add-experience">+</button>
+                <h4 class="experience-parent">Experiences</h4>
+                <button class="add-experience">Add Experience</button>
             </div>
             <div class="experiences">
                 <div class="each-experience">
@@ -103,8 +102,14 @@
             </div>
             <button class="addWorker">Add worker</button>
         </div>
-
     </section>
+    <div class="details-modal">
+        <div class="modal-box">
+            <span class="close-modal">&times;</span>
+            <div class="modal-content"></div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 

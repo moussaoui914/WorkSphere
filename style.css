@@ -23,7 +23,6 @@ body {
     background: #ffffff;
     border-right: 2px solid #e0e0e0;
     padding: 20px;
-    overflow-y: auto;
 }
 
 .left-panel h2 {
@@ -151,7 +150,24 @@ body {
     bottom: 40px;
     right: 240px;
 }
-
+.first-part h2{
+    position: absolute;
+    left: 77px;
+    color: rgb(4, 4, 176);
+}
+.second-part ul li{
+    list-style: none;
+}
+.second-part h3{
+    color: #2f6ee6;
+    margin: 10px 0px;
+}
+.first-part{
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .archive {
     bottom: 40px;
     right: 0px;
@@ -170,6 +186,43 @@ body {
     margin-bottom: 10px;
     margin-top: 10px;
 
+}
+.details-modal {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-box {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 350px;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: absolute;
+    left: 36%;
+    top: 30%;
+}
+
+.close-modal {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.modal-avatar {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-bottom: 15px;
 }
 
 .formulaire {
@@ -200,7 +253,6 @@ h4.experience-parent {
 }
 
 .addWorker {
-    width: 80px;
     background-color: #2196F3;
     height: 30px;
     color: white;
