@@ -50,7 +50,7 @@ function renderWorkersList() {
 
     unassignedWorkers.forEach(worker => {
         const li = document.createElement("li");
-        li.classList.add("worker");
+        li.classList.add("worker"); 
         li.setAttribute("onclick", `details(${worker.id})`);
         li.innerHTML = `
             <img src="${worker.image}" alt="${worker.name}">
