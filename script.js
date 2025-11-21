@@ -5,7 +5,7 @@ const zoneRules = {
     1: ["Receptionist", "IT Technician", "Security Agent", "Manager", "Cleaning", "Other"],
     2: ["IT Technician", "Manager"],
     3: ["Security Agent", "Manager"],
-    4: ["Receptionist", "Manager"],
+    4: ["Receptionist", "Manager","Security Agent"],
     5: ["Receptionist", "IT Technician", "Security Agent", "Manager", "Cleaning", "Other"],
     6: ["Manager", "Security Agent", "Other", "IT Technician", "Receptionist"]
 };
