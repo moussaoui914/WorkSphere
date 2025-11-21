@@ -77,7 +77,6 @@ body {
 }
 
 .zone:hover {
-    transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -100,7 +99,6 @@ body {
 
 .add-btn:hover {
     background: #2980b9;
-    transform: scale(1.05);
 }
 
 .worker {
@@ -133,8 +131,8 @@ body {
     position: absolute;
     background-color: transparent;
     border-style: none;
-    top: 18px;
-    right: 15px;
+    top: 22px;
+    right: 30px;
     color: #e74c3c;
     width: 22px;
     height: 22px;
@@ -145,7 +143,6 @@ body {
 
 .worker .remove:hover {
     color: #c0392b;
-    transform: scale(1.1);
 }
 
 .formulaire {
@@ -192,7 +189,6 @@ body {
 
 .X:hover {
     color: #e74c3c;
-    transform: scale(1.1);
 }
 
 .formulaire label {
@@ -244,23 +240,21 @@ h4.experience-parent {
 }
 
 .add-experience {
-    width: 40px;
-    height: 40px;
+    width: 114px;
+    height: 35px;
     background-color: #3498db;
     color: white;
-    border-radius: 50%;
+    border-radius: 8px;
     border-style: none;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
 }
 
 .add-experience:hover {
     background-color: #2980b9;
-    transform: rotate(90deg);
 }
 
 .experiences {
@@ -332,7 +326,9 @@ h4.experience-parent {
     width: 400px;
     max-height: 80vh;
     overflow-y: auto;
-    position: relative;
+    position: absolute;
+    top: 10%;
+    left: 36%;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
@@ -348,7 +344,6 @@ h4.experience-parent {
 
 .close-modal:hover {
     color: #e74c3c;
-    transform: scale(1.1);
 }
 
 .modal-avatar {
@@ -446,7 +441,6 @@ h4.experience-parent {
 
 .edit-button:hover {
     background: #2980b9;
-    transform: scale(1.05);
 }
 
 .assign-overlay {
@@ -495,7 +489,6 @@ h4.experience-parent {
 
 .close-assign:hover {
     color: #e74c3c;
-    transform: scale(1.1);
 }
 
 .bd {

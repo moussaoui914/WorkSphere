@@ -218,7 +218,7 @@ function addToZone(workerId) {
                 <h2>${worker.name}</h2>
                 <p>${worker.role}</p>
             </div>
-            <button onclick="removeFromZone(${worker.id})" class="edit-button">Remove</button>
+            <button onclick="removeFromZone(${worker.id})" class="edit-button">X</button>
         `;
         zone.appendChild(card);
         
