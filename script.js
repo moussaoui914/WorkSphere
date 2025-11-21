@@ -58,7 +58,7 @@ function renderWorkersList() {
                 <strong>${worker.name}</strong><br>
                 ${worker.role}
             </div>
-            <button class="remove" onclick="updateWorker(${worker.id})">Update</button>
+            <button class="remove" onclick="event.stopPropagation(); updateWorker(${worker.id})">Update</button>
         `;
         list.appendChild(li);
     });
@@ -212,13 +212,14 @@ function addToZone(workerId) {
         const zone = document.querySelectorAll('.zone')[selectedZone - 1];
         const card = document.createElement('div');
         card.className = 'card';
+        card.setAttribute('data-worker-id', workerId);
         card.innerHTML = `
             <img src="${worker.image}" alt="${worker.name}">
             <div>
                 <h2>${worker.name}</h2>
                 <p>${worker.role}</p>
             </div>
-            <button onclick="removeFromZone(${worker.id})" class="edit-button">X</button>
+            <button onclick="removeFromZone(${workerId})" class="edit-button">Remove</button>
         `;
         zone.appendChild(card);
         
@@ -234,13 +235,11 @@ function removeFromZone(workerId) {
         saveData();
         renderWorkersList();
         
-        const zone = document.querySelectorAll('.zone')[worker.assignedZone - 1];
-        const cards = zone.querySelectorAll('.card');
-        cards.forEach(card => {
-            if (card.querySelector('h2').textContent === worker.name) {
-                card.remove();
-            }
-        });
+        const zone = document.querySelectorAll('.zone')[selectedZone - 1];
+        const cardToRemove = zone.querySelector(`[data-worker-id="${workerId}"]`);
+        if (cardToRemove) {
+            cardToRemove.remove();
+        }
     }
 }
 
@@ -287,6 +286,27 @@ closeAssign.addEventListener('click', () => {
 function init() {
     loadData();
     renderWorkersList();
+    
+    // Charger les employés déjà affectés aux zones
+    workers.forEach(worker => {
+        if (worker.assignedZone !== null) {
+            const zone = document.querySelectorAll('.zone')[worker.assignedZone - 1];
+            if (zone) {
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-worker-id', worker.id);
+                card.innerHTML = `
+                    <img src="${worker.image}" alt="${worker.name}">
+                    <div>
+                        <h2>${worker.name}</h2>
+                        <p>${worker.role}</p>
+                    </div>
+                    <button onclick="removeFromZone(${worker.id})" class="edit-button">Remove</button>
+                `;
+                zone.appendChild(card);
+            }
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', init);
