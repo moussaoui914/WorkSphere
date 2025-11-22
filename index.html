@@ -48,16 +48,16 @@
     </main>
 </div>
 
-<section class="formulaire">
+<form class="formulaire" id="worker-form">
     <div class="info-personnel">
         <h2>Personal Information</h2>
-        <h2 class="X">X</h2>
+        <h2 class="X" type="button">X</h2>
 
-        <label>Name</label>
-        <input id="worker-name" type="text" placeholder="Enter your name">
+        <label for="worker-name">Name</label>
+        <input id="worker-name" name="name" type="text" placeholder="Enter your name" required>
 
-        <label>Role</label>
-        <select id="worker-role">
+        <label for="worker-role">Role</label>
+        <select id="worker-role" name="role" required>
             <option value="Receptionist">Receptionist</option>
             <option value="IT Technician">IT Technician</option>
             <option value="Security Agent">Security Agent</option>
@@ -66,18 +66,18 @@
             <option value="Other">Other</option>
         </select>
 
-        <label>Profile Photo (URL)</label>
-        <input id="worker-photo" type="url" placeholder="Enter image source (URL)">
+        <label for="worker-photo">Profile Photo (URL)</label>
+        <input id="worker-photo" name="photo" type="url" placeholder="Enter image source (URL)" required>
 
-        <label>Email</label>
-        <input id="worker-email" type="email" placeholder="Enter your Email">
+        <label for="worker-email">Email</label>
+        <input id="worker-email" name="email" type="email" placeholder="Enter your Email">
 
-        <label>Phone Number</label>
-        <input id="worker-number" type="number" placeholder="Enter your Phone Number">
+        <label for="worker-number">Phone Number</label>
+        <input id="worker-number" name="number" type="tel" placeholder="Enter your Phone Number">
 
         <div class="experiences-header">
             <h4 class="experience-parent">Experiences</h4>
-            <button class="add-experience">Add Experience</button>
+            <button type="button" class="add-experience">Add Experience</button>
         </div>
 
         <div class="experiences">
@@ -88,12 +88,13 @@
                 <input class="worker-company" type="text" placeholder="Company Name">
                 <label>Years Of Experiences</label>
                 <input class="worker-years" type="text" placeholder="Enter your Years Of Experiences">
+                <button class="remove-experience">Remove</button>
             </div>
         </div>
 
-        <button class="addWorker">Add worker</button>
+        <button type="submit" class="addWorker">Add worker</button>
     </div>
-</section>
+</form>
 
 <div class="details-modal">
     <div class="modal-box">

@@ -64,7 +64,9 @@ function renderWorkersList() {
     });
 }
 
-function handleFormSubmit() {
+function handleFormSubmit(e) {
+    e.preventDefault();
+
     const name = document.getElementById("worker-name").value.trim();
     const role = document.getElementById("worker-role").value;
     const image = document.getElementById("worker-photo").value.trim();
@@ -101,26 +103,14 @@ function handleFormSubmit() {
     saveData();
     renderWorkersList();
 
-    document.getElementById("worker-name").value = "";
-    document.getElementById("worker-photo").value = "";
-    document.getElementById("worker-email").value = "";
-    document.getElementById("worker-number").value = "";
-    document.querySelector('.experiences').innerHTML = `
-        <div class="each-experience">
-            <label>Experience</label>
-            <input class="worker-experience" type="text" placeholder="Enter your Experiences">
-            <label>Company Name</label>
-            <input class="worker-company" type="text" placeholder="Company Name">
-            <label>Years Of Experiences</label>
-            <input class="worker-years" type="text" placeholder="Enter your Years Of Experiences">
-        </div>
-    `;
+    e.target.reset();
 
     workerForm.style.display = "none";
     appContainer.style.filter = "blur(0px)";
 }
 
-document.querySelector('.addWorker').addEventListener('click', handleFormSubmit);
+document.getElementById('worker-form').addEventListener('submit', handleFormSubmit);
+
 
 function details(workerId) {
     const worker = workers.find(w => w.id === workerId);
@@ -163,8 +153,10 @@ function addExperiences() {
         <input type="text" class="worker-company" placeholder="Company">
         <label>Years of Experience</label>
         <input type="text" class="worker-years" placeholder="Years">
+        <button class="remove-experience">Remove</button>
     `;
     container.appendChild(div);
+    div.querySelector('.remove-experience').addEventListener('click',() => div.remove());
 }
 
 document.querySelector('.add-experience').addEventListener('click', addExperiences);
@@ -176,7 +168,7 @@ function assignWorkers(zoneNum) {
     
     const modalBox = document.querySelector('.bd');
     modalBox.innerHTML = '';
-    const roles = zoneRules[zoneNum];
+    const roles = zoneRules[zoneNum];    
 
     const availableWorkers = workers.filter(worker => 
         roles.includes(worker.role) && worker.assignedZone === null

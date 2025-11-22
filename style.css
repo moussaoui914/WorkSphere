@@ -115,6 +115,15 @@ body {
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
+.remove-experience{
+    padding: 7px;
+    background-color: #27ae60;
+    color: white;
+    margin-left: 46%;
+    border-radius: 8px;
+    border-style: none;
+    cursor: pointer;
+}
 
 .worker:hover {
     transform: translateY(-2px);
