@@ -62,6 +62,7 @@ body {
     background-image: url("room.jpg");
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
 }
 
 .zone {
@@ -74,10 +75,11 @@ body {
     border: 2px solid #ddd;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease;
-    overflow-y: scroll;
+    overflow: scroll;
 }
 
 .zone:hover {
+    transform: translateY(-5px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
@@ -85,6 +87,8 @@ body {
     font-weight: 600;
     font-size: 16px;
     color: #2c3e50;
+    display: block;
+    margin-bottom: 8px;
 }
 
 .add-btn {
@@ -96,10 +100,12 @@ body {
     border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-size: 14px;
 }
 
 .add-btn:hover {
     background: #2980b9;
+    transform: scale(1.05);
 }
 
 .worker {
@@ -114,14 +120,6 @@ body {
     position: relative;
     transition: all 0.2s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
-.remove-experience{
-    padding: 7px;
-    background-color: #27ae60;
-    color: white;
-    margin-left: 46%;
-    border-radius: 8px;
-    border-style: none;
     cursor: pointer;
 }
 
@@ -139,20 +137,23 @@ body {
 
 .worker .remove {
     position: absolute;
-    background-color: transparent;
-    border-style: none;
-    top: 22px;
-    right: 30px;
-    color: #e74c3c;
-    width: 22px;
-    height: 22px;
+    background-color: #e74c3c;
+    border: none;
+    top: 10px;
+    right: 10px;
+    color: white;
+    width: 60px;
+    height: 25px;
     cursor: pointer;
-    font-weight: bold;
+    font-weight: 500;
     transition: all 0.2s ease;
+    border-radius: 5px;
+    font-size: 12px;
 }
 
 .worker .remove:hover {
-    color: #c0392b;
+    background-color: #c0392b;
+    transform: scale(1.05);
 }
 
 .formulaire {
@@ -163,7 +164,7 @@ body {
     max-width: 800px;
     margin: 0px auto;
     font-family: "Poppins", sans-serif;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -195,10 +196,14 @@ body {
     color: #7f8c8d;
     font-size: 24px;
     transition: all 0.2s ease;
+    background: none;
+    border: none;
+    padding: 5px;
 }
 
 .X:hover {
     color: #e74c3c;
+    transform: scale(1.1);
 }
 
 .formulaire label {
@@ -235,6 +240,16 @@ body {
     color: #95a5a6;
 }
 
+.formulaire input:invalid,
+.formulaire select:invalid {
+    border-color: #e74c3c;
+}
+
+.formulaire input:valid,
+.formulaire select:valid {
+    border-color: #2ecc71;
+}
+
 .experiences-header {
     display: flex;
     justify-content: space-between;
@@ -250,21 +265,23 @@ h4.experience-parent {
 }
 
 .add-experience {
-    width: 114px;
-    height: 35px;
+    width: 40px;
+    height: 40px;
     background-color: #3498db;
     color: white;
-    border-radius: 8px;
+    border-radius: 50%;
     border-style: none;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.3s ease;
 }
 
 .add-experience:hover {
     background-color: #2980b9;
+    transform: rotate(90deg);
 }
 
 .experiences {
@@ -280,6 +297,7 @@ h4.experience-parent {
     margin-bottom: 10px;
     background-color: #f9f9f9;
     transition: all 0.2s ease;
+    position: relative;
 }
 
 .each-experience:hover {
@@ -293,6 +311,22 @@ h4.experience-parent {
 
 .each-experience label:first-child {
     margin-top: 0;
+}
+
+.remove-experience {
+    background: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s ease;
+}
+
+.remove-experience:hover {
+    background: #c0392b;
+    transform: scale(1.05);
 }
 
 .addWorker {
@@ -337,8 +371,8 @@ h4.experience-parent {
     max-height: 80vh;
     overflow-y: auto;
     position: absolute;
-    top: 10%;
-    left: 36%;
+    top: 15%;
+    left: 35%;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
@@ -354,6 +388,7 @@ h4.experience-parent {
 
 .close-modal:hover {
     color: #e74c3c;
+    transform: scale(1.1);
 }
 
 .modal-avatar {
@@ -451,6 +486,7 @@ h4.experience-parent {
 
 .edit-button:hover {
     background: #2980b9;
+    transform: scale(1.05);
 }
 
 .assign-overlay {
@@ -499,6 +535,7 @@ h4.experience-parent {
 
 .close-assign:hover {
     color: #e74c3c;
+    transform: scale(1.1);
 }
 
 .bd {
@@ -537,6 +574,11 @@ h4.experience-parent {
     right: 0px;
 }
 
+.zone.empty-zone {
+    background: rgba(255, 0, 0, 0.3) !important;
+    border: 2px solid #ff0000 !important;
+}
+
 @media (max-width: 768px) {
     .app-container {
         flex-direction: column;
@@ -555,12 +597,10 @@ h4.experience-parent {
     .formulaire {
         width: 95%;
         padding: 20px;
-        left: 50%;
     }
     
     .modal-box {
         width: 90%;
-        left: 5%;
     }
     
     .zone {
@@ -571,5 +611,14 @@ h4.experience-parent {
     
     .zone-title {
         font-size: 14px;
+    }
+    
+    .conference, .reception, .servers, .security-room, .staff-room, .archive {
+        position: relative;
+        top: auto;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        margin: 10px;
     }
 }

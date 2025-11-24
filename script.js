@@ -10,6 +10,8 @@ const zoneRules = {
     6: ["Manager", "Security Agent", "Other", "IT Technician", "Receptionist"]
 };
 
+const zonesWithRedBackground = [1, 3, 4, 6];
+
 const addWorkerBtn = document.querySelector(".add-worker-btn");
 const workerForm = document.querySelector(".formulaire");
 const appContainer = document.querySelector(".app-container");
@@ -53,7 +55,7 @@ function renderWorkersList() {
         li.classList.add("worker"); 
         li.setAttribute("onclick", `details(${worker.id})`);
         li.innerHTML = `
-            <img src="${worker.image}" alt="${worker.name}">
+            <img src="${worker.image}" alt="${worker.name}" onerror="this.src='https://via.placeholder.com/150?text=Image+Not+Found'">
             <div>
                 <strong>${worker.name}</strong><br>
                 ${worker.role}
@@ -104,6 +106,17 @@ function handleFormSubmit(e) {
     renderWorkersList();
 
     e.target.reset();
+    document.querySelector('.experiences').innerHTML = `
+        <div class="each-experience">
+            <label>Experience</label>
+            <input class="worker-experience" type="text" placeholder="Enter your Experiences">
+            <label>Company Name</label>
+            <input class="worker-company" type="text" placeholder="Company Name">
+            <label>Years Of Experiences</label>
+            <input class="worker-years" type="text" placeholder="Enter your Years Of Experiences">
+            <button type="button" class="remove-experience">Remove</button>
+        </div>
+    `;
 
     workerForm.style.display = "none";
     appContainer.style.filter = "blur(0px)";
@@ -111,12 +124,11 @@ function handleFormSubmit(e) {
 
 document.getElementById('worker-form').addEventListener('submit', handleFormSubmit);
 
-
 function details(workerId) {
     const worker = workers.find(w => w.id === workerId);
     modal.querySelector('.modal-content').innerHTML = `
         <div class="first-part">
-            <img src="${worker.image}" class="modal-avatar" alt="${worker.name}">
+            <img src="${worker.image}" class="modal-avatar" alt="${worker.name}" onerror="this.src='https://via.placeholder.com/150?text=Image+Not+Found'">
             <h2>${worker.name}</h2>
         </div>
         <div class="second-part">
@@ -153,7 +165,7 @@ function addExperiences() {
         <input type="text" class="worker-company" placeholder="Company">
         <label>Years of Experience</label>
         <input type="text" class="worker-years" placeholder="Years">
-        <button class="remove-experience">Remove</button>
+        <button type="button" class="remove-experience">Remove</button>
     `;
     container.appendChild(div);
     div.querySelector('.remove-experience').addEventListener('click',() => div.remove());
@@ -163,6 +175,13 @@ document.querySelector('.add-experience').addEventListener('click', addExperienc
 
 function assignWorkers(zoneNum) {
     selectedZone = zoneNum;
+    
+    const workersInZone = workers.filter(worker => worker.assignedZone === zoneNum);
+    if (workersInZone.length >= 5) {
+        alert("Cette zone est déjà pleine (maximum 5 membres)");
+        return;
+    }
+    
     assignOverlay.style.display = 'flex';
     appContainer.style.filter = 'blur(20px)';
     
@@ -183,7 +202,7 @@ function assignWorkers(zoneNum) {
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-            <img src="${worker.image}" alt="${worker.name}">
+            <img src="${worker.image}" alt="${worker.name}" onerror="this.src='https://via.placeholder.com/150?text=Image+Not+Found'">
             <div>
                 <h2>${worker.name}</h2>
                 <p>${worker.role}</p>
@@ -197,6 +216,12 @@ function assignWorkers(zoneNum) {
 function addToZone(workerId) {
     const worker = workers.find(w => w.id === workerId);
     if (worker) {
+        const workersInZone = workers.filter(w => w.assignedZone === selectedZone);
+        if (workersInZone.length >= 5) {
+            alert("Cette zone est déjà pleine (maximum 5 membres)");
+            return;
+        }
+        
         worker.assignedZone = selectedZone;
         saveData();
         renderWorkersList();
@@ -206,7 +231,7 @@ function addToZone(workerId) {
         card.className = 'card';
         card.setAttribute('data-worker-id', workerId);
         card.innerHTML = `
-            <img src="${worker.image}" alt="${worker.name}">
+            <img src="${worker.image}" alt="${worker.name}" onerror="this.src='https://via.placeholder.com/150?text=Image+Not+Found'">
             <div>
                 <h2>${worker.name}</h2>
                 <p>${worker.role}</p>
@@ -214,6 +239,8 @@ function addToZone(workerId) {
             <button onclick="removeFromZone(${workerId})" class="edit-button">Remove</button>
         `;
         zone.appendChild(card);
+        
+        updateZoneBackground(selectedZone);
         
         assignOverlay.style.display = 'none';
         appContainer.style.filter = 'blur(0px)';
@@ -223,14 +250,30 @@ function addToZone(workerId) {
 function removeFromZone(workerId) {
     const worker = workers.find(w => w.id === workerId);
     if (worker) {
+        const zoneNum = worker.assignedZone;
         worker.assignedZone = null;
         saveData();
         renderWorkersList();
         
-        const zone = document.querySelectorAll('.zone')[selectedZone - 1];
+        const zone = document.querySelectorAll('.zone')[zoneNum - 1];
         const cardToRemove = zone.querySelector(`[data-worker-id="${workerId}"]`);
         if (cardToRemove) {
             cardToRemove.remove();
+        }
+        
+        updateZoneBackground(zoneNum);
+    }
+}
+
+function updateZoneBackground(zoneNum) {
+    const zone = document.querySelectorAll('.zone')[zoneNum - 1];
+    const workersInZone = workers.filter(worker => worker.assignedZone === zoneNum);
+    
+    if (zonesWithRedBackground.includes(zoneNum)) {
+        if (workersInZone.length === 0) {
+            zone.classList.add('empty-zone');
+        } else {
+            zone.classList.remove('empty-zone');
         }
     }
 }
@@ -257,8 +300,10 @@ function updateWorker(workerId) {
                 <input type="text" class="worker-company" value="${exp.company}">
                 <label>Years of Experience</label>
                 <input type="text" class="worker-years" value="${exp.year}">
+                <button type="button" class="remove-experience">Remove</button>
             `;
             experiencesContainer.appendChild(div);
+            div.querySelector('.remove-experience').addEventListener('click',() => div.remove());
         });
         
         workers = workers.filter(w => w.id !== workerId);
@@ -279,7 +324,6 @@ function init() {
     loadData();
     renderWorkersList();
     
-    // Charger les employés déjà affectés aux zones
     workers.forEach(worker => {
         if (worker.assignedZone !== null) {
             const zone = document.querySelectorAll('.zone')[worker.assignedZone - 1];
@@ -288,7 +332,7 @@ function init() {
                 card.className = 'card';
                 card.setAttribute('data-worker-id', worker.id);
                 card.innerHTML = `
-                    <img src="${worker.image}" alt="${worker.name}">
+                    <img src="${worker.image}" alt="${worker.name}" onerror="this.src='https://via.placeholder.com/150?text=Image+Not+Found'">
                     <div>
                         <h2>${worker.name}</h2>
                         <p>${worker.role}</p>
@@ -299,6 +343,10 @@ function init() {
             }
         }
     });
+    
+    for (let i = 1; i <= 6; i++) {
+        updateZoneBackground(i);
+    }
 }
 
 document.addEventListener('DOMContentLoaded', init);
