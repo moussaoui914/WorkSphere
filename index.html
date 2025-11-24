@@ -54,7 +54,7 @@
         <h2 class="X" type="button">X</h2>
 
         <label for="worker-name">Name</label>
-        <input id="worker-name" name="name" type="text" placeholder="Enter your name" required>
+        <input id="worker-name" name="name" type="text" placeholder="Enter your name" required pattern="[A-Za-zÀ-ÿ\s]{2,50}" title="2-50 letters only">
 
         <label for="worker-role">Role</label>
         <select id="worker-role" name="role" required>
@@ -67,13 +67,13 @@
         </select>
 
         <label for="worker-photo">Profile Photo (URL)</label>
-        <input id="worker-photo" name="photo" type="url" placeholder="Enter image source (URL)" required>
+        <input id="worker-photo" name="photo" type="url" placeholder="Enter image source (URL)" required pattern="https?://.+" title="Valid URL starting with http:// or https://">
 
         <label for="worker-email">Email</label>
-        <input id="worker-email" name="email" type="email" placeholder="Enter your Email">
+        <input id="worker-email" name="email" type="email" placeholder="Enter your Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" title="Valid email address">
 
         <label for="worker-number">Phone Number</label>
-        <input id="worker-number" name="number" type="tel" placeholder="Enter your Phone Number">
+        <input id="worker-number" name="number" type="tel" placeholder="Enter your Phone Number" pattern="[\+]?[0-9\s\-\(\)]{10,}" title="10 digits phone number">
 
         <div class="experiences-header">
             <h4 class="experience-parent">Experiences</h4>
@@ -83,11 +83,22 @@
         <div class="experiences">
             <div class="each-experience">
                 <label>Experience</label>
-                <input class="worker-experience" type="text" placeholder="Enter your Experiences">
+                <input class="worker-experience" type="text" placeholder="Enter your Experiences" pattern="[A-Za-zÀ-ÿ0-9\s\-\.,]{2,100}" title="2-100 characters">
+                
                 <label>Company Name</label>
-                <input class="worker-company" type="text" placeholder="Company Name">
-                <label>Years Of Experiences</label>
-                <input class="worker-years" type="text" placeholder="Enter your Years Of Experiences">
+                <input class="worker-company" type="text" placeholder="Company Name" pattern="[A-Za-zÀ-ÿ0-9\s\-\.,&]{2,100}" title="2-100 characters">
+                
+                <div class="date-range">
+                    <div class="date-input">
+                        <label>From Date</label>
+                        <input class="worker-from-date" type="date" required>
+                    </div>
+                    <div class="date-input">
+                        <label>To Date</label>
+                        <input class="worker-to-date" type="date" required>
+                    </div>
+                </div>
+                
                 <button type="button" class="remove-experience">Remove</button>
             </div>
         </div>

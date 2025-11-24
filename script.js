@@ -22,6 +22,16 @@ const assignOverlay = document.querySelector('.assign-overlay');
 const closeAssign = document.querySelector('.close-assign');
 let selectedZone;
 
+// Regex patterns for validation
+const patterns = {
+    name: /^[A-Za-zÀ-ÿ\s]{2,50}$/,
+    email: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i,
+    phone: /^[\+]?[0-9\s\-\(\)]{10,}$/,
+    url: /^https?:\/\/.+/,
+    experience: /^[A-Za-zÀ-ÿ0-9\s\-\.,]{2,100}$/,
+    company: /^[A-Za-zÀ-ÿ0-9\s\-\.,&]{2,100}$/
+};
+
 addWorkerBtn.addEventListener("click", () => {
     workerForm.style.display = "block";
     appContainer.style.filter = "blur(20px)";
@@ -66,29 +76,99 @@ function renderWorkersList() {
     });
 }
 
+function validateFormField(value, pattern, fieldName) {
+    if (!value.trim()) return `${fieldName} is required`;
+    if (!pattern.test(value)) return `Invalid ${fieldName} format`;
+    return null;
+}
+
+function validateDateRange(fromDate, toDate) {
+    if (!fromDate || !toDate) return "Both dates are required";
+    
+    const from = new Date(fromDate);
+    const to = new Date(toDate);
+    const today = new Date();
+    
+    if (from > to) return "From date cannot be after To date";
+    if (to > today) return "To date cannot be in the future";
+    if (from > today) return "From date cannot be in the future";
+    
+    return null;
+}
+
 function handleFormSubmit(e) {
     e.preventDefault();
 
+    // Validate main form fields
     const name = document.getElementById("worker-name").value.trim();
     const role = document.getElementById("worker-role").value;
     const image = document.getElementById("worker-photo").value.trim();
     const email = document.getElementById("worker-email").value.trim();
     const number = document.getElementById("worker-number").value.trim();
 
+    // Validate required fields
     if (!name || !role || !image) {
         alert("Name, Role and Image are required.");
         return;
     }
 
+    // Validate field formats
+    const nameError = validateFormField(name, patterns.name, "Name");
+    const emailError = email ? validateFormField(email, patterns.email, "Email") : null;
+    const phoneError = number ? validateFormField(number, patterns.phone, "Phone number") : null;
+    const urlError = validateFormField(image, patterns.url, "Image URL");
+
+    if (nameError || emailError || phoneError || urlError) {
+        alert([nameError, emailError, phoneError, urlError].filter(Boolean).join('\n'));
+        return;
+    }
+
+    // Validate experiences
     const experiences = [];
-    document.querySelectorAll('.each-experience').forEach(row => {
+    let hasExperienceErrors = false;
+    const experienceErrors = [];
+
+    document.querySelectorAll('.each-experience').forEach((row, index) => {
         const exp = row.querySelector('.worker-experience').value.trim();
         const company = row.querySelector('.worker-company').value.trim();
-        const year = row.querySelector('.worker-years').value.trim();
-        if (exp && company && year) {
-            experiences.push({ experience: exp, company: company, year: year });
+        const fromDate = row.querySelector('.worker-from-date').value;
+        const toDate = row.querySelector('.worker-to-date').value;
+
+        // Validate experience fields
+        const expError = validateFormField(exp, patterns.experience, `Experience ${index + 1}`);
+        const companyError = validateFormField(company, patterns.company, `Company ${index + 1}`);
+        const dateError = validateDateRange(fromDate, toDate);
+
+        if (expError || companyError || dateError) {
+            experienceErrors.push(`Experience ${index + 1}: ${[expError, companyError, dateError].filter(Boolean).join(', ')}`);
+            hasExperienceErrors = true;
+            return;
         }
+
+        // Calculate duration in years
+        const from = new Date(fromDate);
+        const to = new Date(toDate);
+        const durationMs = to - from;
+        const durationYears = (durationMs / (1000 * 60 * 60 * 24 * 365.25)).toFixed(1);
+
+        experiences.push({ 
+            experience: exp, 
+            company: company, 
+            fromDate: fromDate,
+            toDate: toDate,
+            duration: durationYears
+        });
     });
+
+    if (hasExperienceErrors) {
+        alert("Please correct the following errors:\n" + experienceErrors.join('\n'));
+        return;
+    }
+
+    if (experiences.length === 0) {
+        alert("At least one experience is required");
+        return;
+    }
 
     const newWorker = {
         id: nextId++,
@@ -109,11 +189,22 @@ function handleFormSubmit(e) {
     document.querySelector('.experiences').innerHTML = `
         <div class="each-experience">
             <label>Experience</label>
-            <input class="worker-experience" type="text" placeholder="Enter your Experiences">
+            <input class="worker-experience" type="text" placeholder="Enter your Experiences" pattern="[A-Za-zÀ-ÿ0-9\s\-\.,]{2,100}" title="2-100 characters">
+            
             <label>Company Name</label>
-            <input class="worker-company" type="text" placeholder="Company Name">
-            <label>Years Of Experiences</label>
-            <input class="worker-years" type="text" placeholder="Enter your Years Of Experiences">
+            <input class="worker-company" type="text" placeholder="Company Name" pattern="[A-Za-zÀ-ÿ0-9\s\-\.,&]{2,100}" title="2-100 characters">
+            
+            <div class="date-range">
+                <div class="date-input">
+                    <label>From Date</label>
+                    <input class="worker-from-date" type="date" required>
+                </div>
+                <div class="date-input">
+                    <label>To Date</label>
+                    <input class="worker-to-date" type="date" required>
+                </div>
+            </div>
+            
             <button type="button" class="remove-experience">Remove</button>
         </div>
     `;
@@ -126,6 +217,18 @@ document.getElementById('worker-form').addEventListener('submit', handleFormSubm
 
 function details(workerId) {
     const worker = workers.find(w => w.id === workerId);
+    
+    const experiencesHTML = worker.experiences.map(ex => {
+        const fromDate = new Date(ex.fromDate).toLocaleDateString();
+        const toDate = new Date(ex.toDate).toLocaleDateString();
+        return `
+            <li>
+                <strong>${ex.experience}</strong> – ${ex.company}<br>
+                <small>${fromDate} to ${toDate} (${ex.duration} years)</small>
+            </li>
+        `;
+    }).join('');
+
     modal.querySelector('.modal-content').innerHTML = `
         <div class="first-part">
             <img src="${worker.image}" class="modal-avatar" alt="${worker.name}" onerror="this.src='https://via.placeholder.com/150?text=Image+Not+Found'">
@@ -137,11 +240,7 @@ function details(workerId) {
             <p><strong>Phone:</strong> ${worker.number}</p>
             <h3>Experiences</h3>
             <ul>
-                ${worker.experiences.map(ex => `
-                    <li>
-                        <strong>${ex.experience}</strong> – ${ex.company} (${ex.year})
-                    </li>
-                `).join('')}
+                ${experiencesHTML}
             </ul>
         </div>
     `;
@@ -160,11 +259,22 @@ function addExperiences() {
     div.className = 'each-experience';
     div.innerHTML = `
         <label>Experience</label>
-        <input type="text" class="worker-experience" placeholder="Enter experience">
+        <input type="text" class="worker-experience" placeholder="Enter experience" pattern="[A-Za-zÀ-ÿ0-9\s\-\.,]{2,100}" title="2-100 characters">
+        
         <label>Company Name</label>
-        <input type="text" class="worker-company" placeholder="Company">
-        <label>Years of Experience</label>
-        <input type="text" class="worker-years" placeholder="Years">
+        <input type="text" class="worker-company" placeholder="Company" pattern="[A-Za-zÀ-ÿ0-9\s\-\.,&]{2,100}" title="2-100 characters">
+        
+        <div class="date-range">
+            <div class="date-input">
+                <label>From Date</label>
+                <input class="worker-from-date" type="date" required>
+            </div>
+            <div class="date-input">
+                <label>To Date</label>
+                <input class="worker-to-date" type="date" required>
+            </div>
+        </div>
+        
         <button type="button" class="remove-experience">Remove</button>
     `;
     container.appendChild(div);
@@ -295,11 +405,22 @@ function updateWorker(workerId) {
             div.className = 'each-experience';
             div.innerHTML = `
                 <label>Experience</label>
-                <input type="text" class="worker-experience" value="${exp.experience}">
+                <input type="text" class="worker-experience" value="${exp.experience}" pattern="[A-Za-zÀ-ÿ0-9\s\-\.,]{2,100}" title="2-100 characters">
+                
                 <label>Company Name</label>
-                <input type="text" class="worker-company" value="${exp.company}">
-                <label>Years of Experience</label>
-                <input type="text" class="worker-years" value="${exp.year}">
+                <input type="text" class="worker-company" value="${exp.company}" pattern="[A-Za-zÀ-ÿ0-9\s\-\.,&]{2,100}" title="2-100 characters">
+                
+                <div class="date-range">
+                    <div class="date-input">
+                        <label>From Date</label>
+                        <input class="worker-from-date" type="date" value="${exp.fromDate}" required>
+                    </div>
+                    <div class="date-input">
+                        <label>To Date</label>
+                        <input class="worker-to-date" type="date" value="${exp.toDate}" required>
+                    </div>
+                </div>
+                
                 <button type="button" class="remove-experience">Remove</button>
             `;
             experiencesContainer.appendChild(div);
